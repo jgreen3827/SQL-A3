@@ -1,0 +1,61 @@
+﻿<Window x:Class="JGreen_A3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JGreen_A3"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="700" Width="1200">
+    <Grid Margin="12,0,-12,0">
+        <Label Content="Source" HorizontalAlignment="Left" Margin="59,23,0,0" VerticalAlignment="Top" FontSize="20"/>
+
+        <Label Content="Data Source" HorizontalAlignment="Left" Margin="57,66,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="SourceDataSourceInput" HorizontalAlignment="Left" Margin="57,86,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="402" Height="20"/>
+        <Label Name="SourceDataSourceError" Content="" HorizontalAlignment="Left" Margin="59,105,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+        <Label Content="Username" HorizontalAlignment="Left" Margin="59,127,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="SourceUsernameInput" HorizontalAlignment="Left" Margin="59,145,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="181" Height="20"/>
+        <Label Name="SourceUserNameError" Content="" HorizontalAlignment="Left" Margin="59,163,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+        <Label Content="Password" HorizontalAlignment="Left" Margin="276,127,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="SourcePwordInput" HorizontalAlignment="Left" Margin="276,145,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" Height="20"/>
+        <Label Name="SourcePwordError" Content="" HorizontalAlignment="Left" Margin="280,163,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+        <Label Content="Database" HorizontalAlignment="Left" Margin="57,183,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="SourceDbInput" HorizontalAlignment="Left" Margin="57,203,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="402" Height="20"/>
+        <Label Name="SourceDbError" Content="" HorizontalAlignment="Left" Margin="59,223,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+        <Label Content="Table" HorizontalAlignment="Left" Margin="56,248,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="SourceTableInput" HorizontalAlignment="Left" Margin="56,267,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="402" Height="20"/>
+        <Label Name="SourceTableError" Content="" HorizontalAlignment="Left" Margin="58,288,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+
+        <Label Content="Destination" HorizontalAlignment="Left" Margin="59,329,0,0" VerticalAlignment="Top" FontSize="20"/>
+
+        <Label Content="Data Source" HorizontalAlignment="Left" Margin="57,372,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="DestinationDataSourceInput" HorizontalAlignment="Left" Margin="57,392,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="402" Height="20"/>
+        <Label Name="DestinationDataSourceError" Content="" HorizontalAlignment="Left" Margin="59,412,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+        <Label Content="Username" HorizontalAlignment="Left" Margin="59,433,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="DestinationUsernameInput" HorizontalAlignment="Left" Margin="59,451,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="181" Height="20"/>
+        <Label Name="DestinationUsernameError" Content="" HorizontalAlignment="Left" Margin="59,471,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+        <Label Content="Password" HorizontalAlignment="Left" Margin="276,433,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="DestinationPwordInput" HorizontalAlignment="Left" Margin="276,451,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" Height="20"/>
+        <Label Name="DestinationPwordError" Content="" HorizontalAlignment="Left" Margin="283,471,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+        <Label Content="Database" HorizontalAlignment="Left" Margin="57,489,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="DestinationDbInput" HorizontalAlignment="Left" Margin="57,509,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="402" Height="20"/>
+        <Label Name="DestinationDbError" Content="" HorizontalAlignment="Left" Margin="59,529,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+        <Label Content="Table" HorizontalAlignment="Left" Margin="56,554,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="DestinationTableInput" HorizontalAlignment="Left" Margin="56,573,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="402" Height="20"/>
+        <Label Name="DestinationTableError" Content="" HorizontalAlignment="Left" Margin="58,592,0,0" VerticalAlignment="Top" Foreground="Red"/>
+
+
+        <Button Name="CopyButton" Content="Copy" HorizontalAlignment="Left" Margin="59,626,0,0" VerticalAlignment="Top" Height="36" Width="96" Click="CopyButton_Click"/>
+
+        <DataGrid Name="SourceDG" Margin="542,50,29,384"/>
+        <DataGrid Name="DestinationDG" Margin="542,342,29,85"/>
+    </Grid>
+</Window>

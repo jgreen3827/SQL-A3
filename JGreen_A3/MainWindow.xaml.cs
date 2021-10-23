@@ -39,16 +39,16 @@ namespace JGreen_A3
      */
     public class UserInput
     {
-        public string sourceDs;
-        public string sourceUser;
-        public string sourcePword;
-        public string sourceDb;
-        public string sourceTbl;
-        public string destinationDs;
-        public string destinationUser;
-        public string destinationPword;
-        public string destinationDb;
-        public string destinationTbl;
+        public readonly string sourceDs;
+        public readonly string sourceUser;
+        public readonly string sourcePword;
+        public readonly string sourceDb;
+        public readonly string sourceTbl;
+        public readonly string destinationDs;
+        public readonly string destinationUser;
+        public readonly string destinationPword;
+        public readonly string destinationDb;
+        public readonly string destinationTbl;
 
         /*
          *  Function    : UserInput (Constructor)
@@ -91,8 +91,8 @@ namespace JGreen_A3
      */
     public class ConnectionCheck
     {
-        public bool failLogin;
-        public bool dbExists;
+        public readonly bool failLogin;
+        public readonly bool dbExists;
 
         /*
          *  Function    : ConnectionCheck (Constructor)
@@ -118,9 +118,9 @@ namespace JGreen_A3
      */
     public class TableInformation
     {
-        public string columnName;
-        public string columnType;
-        public string maxChar;
+        public readonly string columnName;
+        public readonly string columnType;
+        public readonly string maxChar;
 
         /*
          *  Function    :   TableInformation (Constructor)
@@ -141,6 +141,41 @@ namespace JGreen_A3
         }
     }
 
+    public class StringResources
+    {
+        public readonly string emptyString = "";
+        public readonly string dataSource = "Data Source=";
+        public readonly string initialCatalog = ";Initial Catalog=";
+        public readonly string initCatMastId = ";Initial Catalog=master;User ID=";
+        public readonly string userId = ";User ID=";
+        public readonly string password = ";Password=";
+        public readonly string semiColon = ";";
+        public readonly string qteSemiColon = "';";
+        public readonly string connectDSErr = "Error with connecting/logging in to the Data Source..";
+        public readonly string dBNotExistEnd = " does not exist, enter a correct database..";
+        public readonly string tblNotExistEnd = " does not exist, enter a correct table..";
+        public readonly string emptyFldMsg = "This field must be filled out..";
+        public readonly string dbCountCmd = "SELECT COUNT(*) FROM master.dbo.sysdatabases WHERE name=@database";
+        public readonly string sqlErrMsg = "SQL ERROR -- \n";
+        public readonly string dataTypeNoMatchErr = " columns and/or datatypes do not match the source table, please enter a correct table..";
+        public readonly string dbParam = "@database";
+        public readonly string cmdTblExistFront = "IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'";
+        public readonly string cmdTblExistEnd = "') SELECT 1 ELSE SELECT 0";
+        public readonly string comprTblCmdFront = "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'";
+        public readonly string dashChar = "-";
+        public readonly string createTable = "CREATE TABLE ";
+        public readonly string space = " ";
+        public readonly string opnBrckt = "(";
+        public readonly string comma = ",";
+        public readonly string spcOpnBrckt = " (";
+        public readonly string clsBrckSemiCln = ");";
+        public readonly string dblCloseBrck = ") );";
+        public readonly string clsBrckComma = "),";
+        public readonly string selectFrom = "SELECT * FROM ";
+        public readonly string rollbackExceptMsg = "Rollback Exception Type -- \n";
+        public readonly string stringFormat = "{0}-{1}-{2}";
+    }
+
     /*
      * Name     : MainWindow
      * Purpose  : 
@@ -150,6 +185,7 @@ namespace JGreen_A3
     {
         SqlConnection srcSqlConnection;
         SqlConnection destSqlConnection;
+        StringResources stringResources = new StringResources();
 
         /*
          *  Function    :   MainWindow
@@ -178,16 +214,16 @@ namespace JGreen_A3
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             //reset error messages
-            SourceDataSourceError.Content = "";
-            SourceUserNameError.Content = "";
-            SourcePwordError.Content = "";
-            SourceDbError.Content = "";
-            SourceTableError.Content = "";
-            DestinationDataSourceError.Content = "";
-            DestinationUsernameError.Content = "";
-            DestinationPwordError.Content = "";
-            DestinationDbError.Content = "";
-            DestinationTableError.Content = "";
+            SourceDataSourceError.Content = stringResources.emptyString;
+            SourceUserNameError.Content = stringResources.emptyString;
+            SourcePwordError.Content = stringResources.emptyString;
+            SourceDbError.Content = stringResources.emptyString;
+            SourceTableError.Content = stringResources.emptyString;
+            DestinationDataSourceError.Content = stringResources.emptyString;
+            DestinationUsernameError.Content = stringResources.emptyString;
+            DestinationPwordError.Content = stringResources.emptyString;
+            DestinationDbError.Content = stringResources.emptyString;
+            DestinationTableError.Content = stringResources.emptyString;
 
             // clear data grids
             SourceDG.ItemsSource = null;
@@ -216,8 +252,8 @@ namespace JGreen_A3
             }
 
             //set up SQL Connections
-            string srcSqlConnectionString = "Data Source=" + userInputs.sourceDs + ";Initial Catalog=" + userInputs.sourceDb + ";User ID=" + userInputs.sourceUser + ";Password=" + userInputs.sourcePword + ";";
-            string dstSqlConnectionString = "Data Source=" + userInputs.destinationDs + ";Initial Catalog=" + userInputs.destinationDb + ";User ID=" + userInputs.destinationUser + ";Password=" + userInputs.destinationPword + ";";
+            string srcSqlConnectionString = stringResources.dataSource + userInputs.sourceDs + stringResources.initialCatalog + userInputs.sourceDb + stringResources.userId + userInputs.sourceUser + stringResources.password + userInputs.sourcePword + stringResources.semiColon;
+            string dstSqlConnectionString = stringResources.dataSource + userInputs.destinationDs + stringResources.initialCatalog + userInputs.destinationDb + stringResources.userId + userInputs.destinationUser + stringResources.password + userInputs.destinationPword + stringResources.semiColon;
             srcSqlConnection = new SqlConnection(srcSqlConnectionString);
             destSqlConnection = new SqlConnection(dstSqlConnectionString);
 
@@ -230,22 +266,22 @@ namespace JGreen_A3
             {
                 if(sourceConnection.failLogin == false)
                 {
-                    SourceDataSourceError.Content = "Error with connecting/logging in to the Data Source..";
+                    SourceDataSourceError.Content = stringResources.connectDSErr;
                 }
 
                 if(destinationConnection.failLogin == false)
                 {
-                    DestinationDataSourceError.Content = "Error with connecting/logging in to the Data Source..";
+                    DestinationDataSourceError.Content = stringResources.connectDSErr;
                 }
 
                 if(sourceConnection.dbExists == false)
                 {
-                    SourceDbError.Content = userInputs.sourceDb + " does not exist, enter a correct database..";
+                    SourceDbError.Content = userInputs.sourceDb + stringResources.dBNotExistEnd;
                 }
 
                 if(destinationConnection.dbExists == false)
                 {
-                    DestinationDbError.Content = userInputs.destinationDb + " does not exist, enter a correct database..";
+                    DestinationDbError.Content = userInputs.destinationDb + stringResources.dBNotExistEnd;
                 }
 
                 return;
@@ -258,12 +294,12 @@ namespace JGreen_A3
             if (sourceTable == false)
             {
                 //if the source table does not exist send error to user
-                SourceTableError.Content = userInputs.sourceTbl + " does not exist, enter a correct table..";
+                SourceTableError.Content = userInputs.sourceTbl + stringResources.tblNotExistEnd;
                 return;
             }
 
             //fill source data grid
-            FillDataGrid(userInputs.sourceDb, userInputs.sourceTbl, SourceDG, srcSqlConnection);
+            FillDataGrid(userInputs.sourceTbl, SourceDG, srcSqlConnection);
  
             if (destinationTable == false)
             {
@@ -281,8 +317,8 @@ namespace JGreen_A3
             else
             {
                 //both db and table exist
-                DestinationDbError.Content = "";
-                DestinationTableError.Content = "";
+                DestinationDbError.Content = stringResources.emptyString;
+                DestinationTableError.Content = stringResources.emptyString;
 
                 //check if the table column names and datatypes match the source column names and datatypes
                 bool tablesMatch = CompareTables(userInputs);
@@ -298,13 +334,13 @@ namespace JGreen_A3
                 else
                 {
                     //if destination table doesn't match source table column names, and datatypes send error to user
-                    DestinationTableError.Content = userInputs.destinationTbl + " columns and/or datatypes do not match the source table, please enter a correct table..";
+                    DestinationTableError.Content = userInputs.destinationTbl + stringResources.dataTypeNoMatchErr;
                     return;
                 }
             }
 
             //fill destination data grid
-            FillDataGrid(userInputs.destinationDb, userInputs.destinationTbl, DestinationDG, destSqlConnection);
+            FillDataGrid(userInputs.destinationTbl, DestinationDG, destSqlConnection);
         }
 
         /*
@@ -322,63 +358,63 @@ namespace JGreen_A3
         {
             bool allFilled = true;
 
-            if(input.sourceDs == "")
+            if(input.sourceDs == stringResources.emptyString)
             {
-                SourceDataSourceError.Content = "This field must be filled out..";
+                SourceDataSourceError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
-            if(input.sourceUser == "")
+            if(input.sourceUser == stringResources.emptyString)
             {
-                SourceUserNameError.Content = "This field must be filled out..";
+                SourceUserNameError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
-            if(input.sourcePword == "")
+            if(input.sourcePword == stringResources.emptyString)
             {
-                SourcePwordError.Content = "This field must be filled out..";
+                SourcePwordError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
-            if (input.sourceDb == "")
+            if (input.sourceDb == stringResources.emptyString)
             {
-                SourceDbError.Content = "This field must be filled out..";
+                SourceDbError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
-            if (input.sourceTbl == "")
+            if (input.sourceTbl == stringResources.emptyString)
             {
-                SourceTableError.Content = "This field must be filled out..";
+                SourceTableError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
-            if(input.destinationDs == "")
+            if(input.destinationDs == stringResources.emptyString)
             {
-                DestinationDataSourceError.Content = "This field must be filled out..";
+                DestinationDataSourceError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
-            if(input.destinationUser == "")
+            if(input.destinationUser == stringResources.emptyString)
             {
-                DestinationUsernameError.Content = "This field must be filled out..";
+                DestinationUsernameError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
-            if(input.destinationPword == "")
+            if(input.destinationPword == stringResources.emptyString)
             {
-                DestinationPwordError.Content = "This field must be filled out..";
+                DestinationPwordError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
-            if (input.destinationDb == "")
+            if (input.destinationDb == stringResources.emptyString)
             {
-                DestinationDbError.Content = "This field must be filled out..";
+                DestinationDbError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
-            if (input.destinationTbl == "")
+            if (input.destinationTbl == stringResources.emptyString)
             {
-                DestinationTableError.Content = "This field must be filled out..";
+                DestinationTableError.Content = stringResources.emptyFldMsg;
                 allFilled = false;
             }
 
@@ -402,8 +438,8 @@ namespace JGreen_A3
          */
         private ConnectionCheck CheckConnection(string ds, string user, string pword, string databaseName)
         {
-            string srcSqlConnectionString = "Data Source=" + ds + ";Initial Catalog=master;User ID=" + user + ";Password=" + pword + ";";
-            string dbCmdText = "SELECT COUNT(*) FROM master.dbo.sysdatabases WHERE name=@database";
+            string srcSqlConnectionString = stringResources.dataSource + ds + stringResources.initCatMastId + user + stringResources.password + pword + stringResources.semiColon;
+            string dbCmdText = stringResources.dbCountCmd;
             SqlConnection sqlConnection =  new SqlConnection(srcSqlConnectionString);
             bool databaseExists = false;
             try
@@ -413,7 +449,7 @@ namespace JGreen_A3
                 {
                     //check if the database exists
                     SqlCommand dbCmd = new SqlCommand(dbCmdText, sqlConnection);
-                    dbCmd.Parameters.Add("@database", System.Data.SqlDbType.NVarChar).Value = databaseName;
+                    dbCmd.Parameters.Add(stringResources.dbParam, System.Data.SqlDbType.NVarChar).Value = databaseName;
                     databaseExists = Convert.ToInt32(dbCmd.ExecuteScalar()) == 1;
 
                     if(databaseExists == false)
@@ -425,14 +461,14 @@ namespace JGreen_A3
                 catch (Exception ex)
                 {
                     //if there was an error with checking for the db
-                    MessageBox.Show("SQL ERROR -- \n" + ex.Message);
+                    MessageBox.Show(stringResources.sqlErrMsg + ex.Message);
                     return new ConnectionCheck(false, true);
                 }
             }
             catch (Exception ex)
             {
                 //if the login fails or data source doesnt exist
-                MessageBox.Show("SQL ERROR -- \n" + ex.Message);
+                MessageBox.Show(stringResources.sqlErrMsg + ex.Message);
                 return new ConnectionCheck(false, true);
             }
 
@@ -452,7 +488,7 @@ namespace JGreen_A3
          */
         private bool CheckTableExists(string tableName, SqlConnection sqlConnection)
         {
-            string tableCmdText = "IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'" + tableName + "') SELECT 1 ELSE SELECT 0";
+            string tableCmdText = stringResources.cmdTblExistFront + tableName + stringResources.cmdTblExistEnd;
             bool tableExists = false;
             try
             {
@@ -465,7 +501,7 @@ namespace JGreen_A3
             } 
             catch (Exception ex)
             {
-                MessageBox.Show("SQL ERROR -- \n" + ex.Message);
+                MessageBox.Show(stringResources.sqlErrMsg + ex.Message);
             }
 
             return tableExists;
@@ -484,8 +520,8 @@ namespace JGreen_A3
          */
         private bool CompareTables(UserInput userInput)
         {
-            string sourceCmdText = "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'" + userInput.sourceTbl + "';";
-            string destCmdText = "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'" + userInput.destinationTbl + "';";
+            string sourceCmdText = stringResources.comprTblCmdFront + userInput.sourceTbl + stringResources.qteSemiColon;
+            string destCmdText = stringResources.comprTblCmdFront + userInput.destinationTbl + stringResources.qteSemiColon;
 
             //get information from source and destination tables
             List<TableInformation> srcTableInfo = GetTableInfo(sourceCmdText, srcSqlConnection);
@@ -573,7 +609,7 @@ namespace JGreen_A3
                 while (dataReader.Read())
                 {
                     string result = ReadSingleRow((IDataRecord)dataReader);
-                    string[] resultArray = result.Split('-');
+                    string[] resultArray = result.Split(stringResources.dashChar);
                     tableInfo.Add(new TableInformation(resultArray[0], resultArray[1], resultArray[2]));
                 }
                 dataReader.Close();
@@ -583,7 +619,7 @@ namespace JGreen_A3
             }
             catch (Exception ex)
             {
-                MessageBox.Show("SQL ERROR -- \n" + ex.Message);
+                MessageBox.Show(stringResources.sqlErrMsg + ex.Message);
             }
    
             return tableInfo;
@@ -601,31 +637,31 @@ namespace JGreen_A3
          */
         private bool CreateDestinationTable(UserInput userInput, SqlConnection sqlConnection)
         {
-            string sourceCmdText = "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'" + userInput.sourceTbl + "';";
+            string sourceCmdText = stringResources.comprTblCmdFront + userInput.sourceTbl + stringResources.qteSemiColon;
             List<TableInformation> srcTableInfo = GetTableInfo(sourceCmdText, srcSqlConnection);
 
-            string createDestCmdText = "CREATE TABLE " + userInput.destinationTbl + " (";
+            string createDestCmdText = stringResources.createTable + userInput.destinationTbl + stringResources.spcOpnBrckt;
 
             for (int i = 0; i < srcTableInfo.Count(); i++)
             {
                 if((i + 1) == srcTableInfo.Count())
                 {
-                    if (srcTableInfo[i].maxChar == "")
+                    if (srcTableInfo[i].maxChar == stringResources.emptyString)
                     {
-                        createDestCmdText = createDestCmdText + " " + srcTableInfo[i].columnName + " " + srcTableInfo[i].columnType + ");";
+                        createDestCmdText = createDestCmdText + stringResources.space + srcTableInfo[i].columnName + stringResources.space + srcTableInfo[i].columnType + stringResources.clsBrckSemiCln;
                     }
                     else
                     {
-                        createDestCmdText = createDestCmdText + " " + srcTableInfo[i].columnName + " " + srcTableInfo[i].columnType + "(" + srcTableInfo[i].maxChar + ") );";
+                        createDestCmdText = createDestCmdText + stringResources.space + srcTableInfo[i].columnName + stringResources.space + srcTableInfo[i].columnType + stringResources.opnBrckt + srcTableInfo[i].maxChar + stringResources.dblCloseBrck;
                     }
                 } else
                 {
-                    if(srcTableInfo[i].maxChar == "")
+                    if(srcTableInfo[i].maxChar == stringResources.emptyString)
                     {
-                        createDestCmdText = createDestCmdText + " " + srcTableInfo[i].columnName + " " + srcTableInfo[i].columnType + ",";
+                        createDestCmdText = createDestCmdText + stringResources.space + srcTableInfo[i].columnName + stringResources.space + srcTableInfo[i].columnType + stringResources.comma;
                     } else
                     {
-                        createDestCmdText = createDestCmdText + " " + srcTableInfo[i].columnName + " " + srcTableInfo[i].columnType + "(" + srcTableInfo[i].maxChar + "),";
+                        createDestCmdText = createDestCmdText + stringResources.space + srcTableInfo[i].columnName + stringResources.space + srcTableInfo[i].columnType + stringResources.opnBrckt + srcTableInfo[i].maxChar + stringResources.clsBrckComma;
                     }
                     
                 }
@@ -642,7 +678,7 @@ namespace JGreen_A3
             }
             catch (Exception ex)
             {
-                MessageBox.Show("SQL ERROR -- \n" + ex.Message);
+                MessageBox.Show(stringResources.sqlErrMsg + ex.Message);
                 return false;
             }
 
@@ -661,7 +697,7 @@ namespace JGreen_A3
         private bool SourceToDestination(UserInput userInput)
         {
             SqlCommand srcCommand = null;
-            string srcCommandTxt = "SELECT * FROM " + userInput.sourceTbl + ";";
+            string srcCommandTxt = stringResources.selectFrom + userInput.sourceTbl + stringResources.semiColon;
 
             srcSqlConnection.Open();
             srcCommand = new SqlCommand(srcCommandTxt, srcSqlConnection);
@@ -689,7 +725,7 @@ namespace JGreen_A3
                 }
                 catch (Exception ex2)
                 {
-                    Console.WriteLine("Rollback Exception Type -- \n" + ex2.Message);
+                    Console.WriteLine(stringResources.rollbackExceptMsg + ex2.Message);
                     destSqlConnection.Close();
                     reader.Close();
                     srcSqlConnection.Close();
@@ -714,9 +750,9 @@ namespace JGreen_A3
          *  Returns     :
          *      String : This will return a formatted string of the seprated values that came from the data record
          */
-        private static String ReadSingleRow(IDataRecord dataRecord)
+        private string ReadSingleRow(IDataRecord dataRecord)
         {
-            return String.Format("{0}-{1}-{2}", dataRecord[0], dataRecord[1], dataRecord[2]);
+            return String.Format(stringResources.stringFormat, dataRecord[0], dataRecord[1], dataRecord[2]);
         }
 
         /*
@@ -731,9 +767,9 @@ namespace JGreen_A3
          *  Returns     :
          *      void
          */
-        private void FillDataGrid(string database, string table, DataGrid dataGrid, SqlConnection sqlConnection)
+        private void FillDataGrid(string table, DataGrid dataGrid, SqlConnection sqlConnection)
         {
-            string daCmdText = "SELECT * FROM " + table;
+            string daCmdText = stringResources.selectFrom + table;
             SqlCommand displayCommand = new SqlCommand(daCmdText, sqlConnection);
             SqlDataAdapter dataAdapter = new SqlDataAdapter(displayCommand);
             DataTable dataTable = new DataTable(table);
